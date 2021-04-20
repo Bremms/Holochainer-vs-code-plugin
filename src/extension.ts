@@ -24,32 +24,110 @@ export function activate(context: vscode.ExtensionContext) {
 	let nixShell = vscode.commands.registerCommand('holochainer.nix', () => {
 		terminal().sendText("nix-shell .");
 	});
-	let createDefNix = vscode.commands.registerCommand("holochainer.defaultNix", () => {
+	let createDefaultNixFile = vscode.commands.registerCommand("holochainer.defaultNix", () => {
 		const wsedit = new vscode.WorkspaceEdit();
-		if(vscode.workspace.workspaceFolders == undefined){
+		if (vscode.workspace.workspaceFolders == undefined) {
 			vscode.window.showInformationMessage('Open a workspace to create the default nix file');
 			return;
 		}
 
 		const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
 		const filePath = vscode.Uri.file(wsPath + '/default.nix');
-	
+
 		wsedit.createFile(filePath, { ignoreIfExists: true });
 		var encoder = new TextEncoder()
-		vscode.workspace.fs.writeFile(filePath,encoder.encode(defaultNixFileContent));
-		
-		
+		vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
+
+
 		vscode.workspace.applyEdit(wsedit);
 		vscode.window.showInformationMessage('Created a new file: default.nix');
-		
+
 	});
+	let compileToWasm = vscode.commands.registerCommand("holochainer.compileToWasm", () => {
+		terminal().sendText("CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown");
+	})
+
+	let dnaInit = vscode.commands.registerCommand("holochainer.dna.init", () => {
+		hcDnaInit();
+	})
+	let dnaPack = vscode.commands.registerCommand("holochainer.dna.pack",() => {
+		hcDnaPack();
+	});
+
+	let dnaUnpack = vscode.commands.registerCommand("holochainer.dna.unpack",() => {
+		hcDnaUnpack();
+	})
+
+	let appInit = vscode.commands.registerCommand("holochainer.app.init",() => {
+		hcAppInit()
+	})
+	let appPack = vscode.commands.registerCommand("holochainer.app.pack",() => {
+		hcAppPack()
+	})
+	let appUnPack = vscode.commands.registerCommand("holochainer.app.unpack",() => {
+		hcAppUnPack()
+	})
+	// context.subscriptions.push(showInputBox())
 	context.subscriptions.push(nixShell);
-	context.subscriptions.push(createDefNix);
+	context.subscriptions.push(createDefaultNixFile);
+	context.subscriptions.push(compileToWasm);
+	context.subscriptions.push(dnaInit);
+	context.subscriptions.push(dnaPack);
+	context.subscriptions.push(dnaUnpack);
+	context.subscriptions.push(appInit);
+	context.subscriptions.push(appPack);
+	context.subscriptions.push(appUnPack);
 }
 // this method is called when your extension is deactivated
 export function deactivate() { }
 //Replace this with a file if I find a way to target the src files.
 
+export async function hcDnaInit() {
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/dna' will be taken instead",
+	});
+	terminal().sendText(`hc dna init ${result==null||result==""? 'workdir/dna' : result}`);
+}
+
+
+export async function hcDnaPack() {
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/dna' will be taken instead",
+	});
+	terminal().sendText(`hc dna pack ${result==null||result==""? 'workdir/dna' : result}`);
+}
+export async function hcDnaUnpack(){
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/dna' will be taken instead",
+	});
+	terminal().sendText(`hc dna unpack ${result==null||result==""? 'workdir/dna' : result}`);
+}
+
+export async function hcAppInit(){
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/happ' will be taken instead",
+	});
+	terminal().sendText(`hc app init ${result==null||result==""? 'workdir/happ' : result}`);
+}
+
+export async function hcAppPack(){
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/happ' will be taken instead",
+	});
+	terminal().sendText(`hc app pack ${result==null||result==""? 'workdir/happ' : result}`);
+}
+export async function hcAppUnPack(){
+	const result = await vscode.window.showInputBox({
+		value: '',
+		prompt:"Select a path. If none supplied 'workdir/happ' will be taken instead",
+	});
+	terminal().sendText(`hc app unpack ${result==null||result==""? 'workdir/happ' : result}`);
+}
 let defaultNixFileContent = `let
 holonixPath = builtins.fetchTarball {
   url = "https://github.com/holochain/holonix/archive/90a19d5771c069dbcc9b27938009486b54b12fb7.tar.gz";

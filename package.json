@@ -11,17 +11,49 @@
     ],
     "activationEvents": [
         "onCommand:holochainer.nix",
-        "onCommand:holochainer.defaultNix"
+        "onCommand:holochainer.defaultNix",
+        "onCommand:holochainer.compileToWasm",
+        "onCommand:holochainer.dna.init",
+        "onCommand:holochainer.dna.pack",
+        "onCommand:holochainer.dna.unpack",
+        "onCommand:holochainer.app.init",
+        "onCommand:holochainer.app.pack",
+        "onCommand:holochainer.app.unpack"
     ],
     "main": "./dist/extension.js",
     "contributes": {
         "commands": [{
                 "command": "holochainer.nix",
-                "title": "Enter into nix-shell"
+                "title": "Holo Enter into nix-shell"
             },
             {
                 "command": "holochainer.defaultNix",
-                "title": "Create a default nix file"
+                "title": "Holo Create a default nix file"
+            },
+            {
+                "command": "holochainer.compileToWasm",
+                "title": "Holo Compile zomes into wasm"
+            },
+            {
+                "command": "holochainer.dna.init",
+                "title": "Holo Build the dna file"
+            },
+            {
+                "command": "holochainer.dna.pack",
+                "title": "Holo Package the WASM into a DNA file"
+            },
+            {
+                "command": "holochainer.dna.unpack",
+                "title": "Holo Unpack the parts of `.dna` file out into a directory."
+            }, {
+                "command": "holochainer.app.init",
+                "title": "Holo Create a new, empty Holochain app (hApp) working directory"
+            }, {
+                "command": "holochainer.app.pack",
+                "title": "Holo Pack the contents of a directory into a `.happ` bundle file."
+            }, {
+                "command": "holochainer.app.pack",
+                "title": "Holo Unpack the parts of `.happ` file out into a directory."
             }
         ]
     },
