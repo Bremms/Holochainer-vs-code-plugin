@@ -56,6 +56,7 @@
                 "title": "Holo Unpack the parts of `.happ` file out into a directory."
             }
         ]
+
     },
     "scripts": {
         "vscode:prepublish": "npm run package",
