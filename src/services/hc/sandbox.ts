@@ -5,7 +5,7 @@ import { displayTextBoxCommand, executeCmdCommand, getActiveTerminal } from "../
 
 export class SandboxGenerate implements ICommand {
     name = "holochainer.sandbox.generate";
-    execute = async () => {
+    execute = async (args : any) => {
         const def = [
             {
                 value: '',

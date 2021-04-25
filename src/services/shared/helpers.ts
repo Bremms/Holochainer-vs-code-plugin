@@ -1,6 +1,17 @@
+import { FILE } from 'node:dns';
 import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
 
+export const getRootOfVsCodeExtension = () => {
+    var myExtDir =vscode.env.appRoot;
+    return myExtDir;
+}
+export const getTemplateFile = (fileName :string) => {
+    var root = getRootOfVsCodeExtension();
+    var path = `${root}\\src\\templates\\${fileName}`;
+    var vscodeUri = vscode.Uri.parse(path);
+   return vscode.workspace.fs.readFile(vscodeUri);
+}
 export const getActiveTerminal = (show: boolean = true): vscode.Terminal => {
     let terminal = vscode.window.activeTerminal == null ? vscode.window.createTerminal() : vscode.window.activeTerminal;
 

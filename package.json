@@ -18,10 +18,19 @@
         "onCommand:holochainer.dna.unpack",
         "onCommand:holochainer.app.init",
         "onCommand:holochainer.app.pack",
-        "onCommand:holochainer.app.unpack"
+        "onCommand:holochainer.app.unpack",
+        "onCommand:holochainer.tests.init",
+        "onCommand:holochainer.zomes.create"
     ],
     "main": "./dist/extension.js",
     "contributes": {
+        "menus": {
+            "explorer/context": [{
+                "when": "explorerResourceIsFolder",
+                "command": "holochainer.zomes.create",
+                "group": "holochainer"
+            }]
+        },
         "commands": [{
                 "command": "holochainer.nix",
                 "title": "Holo Enter into nix-shell"
@@ -57,6 +66,14 @@
             {
                 "command": "holochainer.app.pack",
                 "title": "Holo Unpack the parts of `.happ` file out into a directory."
+            },
+            {
+                "command": "holochainer.tests.init",
+                "title": "Holo initialize typescript tests"
+            },
+            {
+                "command": "holochainer.zomes.create",
+                "title": "Create a new zome"
             }
         ]
     },
@@ -87,7 +104,5 @@
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0"
     },
-    "dependencies": {
-
-    }
+    "dependencies": {}
 }

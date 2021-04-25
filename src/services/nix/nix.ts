@@ -1,36 +1,38 @@
-import { getActiveTerminal } from "../shared/helpers";
+import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile } from "../shared/helpers";
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from 'util';
 export class enterNix implements ICommand {
-    name = "holochainer.nix";
-    execute = async () => {
-      
-        getActiveTerminal().sendText("nix-shell .");
-    }
+  name = "holochainer.nix";
+  execute = async (args : any) => {
+
+    getActiveTerminal().sendText("nix-shell .");
+  }
 }
 
 
-export class createDefaultNix implements ICommand{
-    name = "holochainer.nix.defaultNix";
-    execute = async () => {
-        const wsedit = new vscode.WorkspaceEdit();
-		if (vscode.workspace.workspaceFolders == undefined) {
-			vscode.window.showInformationMessage('Open a workspace to create the default nix file');
-			return;
-		}
-
-		const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
-		const filePath = vscode.Uri.file(wsPath + '/default.nix');
-
-		wsedit.createFile(filePath, { ignoreIfExists: true });
-		var encoder = new TextEncoder()
-		vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
-
-
-		vscode.workspace.applyEdit(wsedit);
-		vscode.window.showInformationMessage('Created a new file: default.nix');
+export class createDefaultNix implements ICommand {
+  name = "holochainer.nix.defaultNix";
+  execute = async () => {
+    const wsedit = new vscode.WorkspaceEdit();
+    if (vscode.workspace.workspaceFolders == undefined) {
+      vscode.window.showInformationMessage('Open a workspace to create the default nix file');
+      return;
     }
+    //Fetch template file
+  //  var nixDefaultContent = await getTemplateFile("default-nix.txt");
+
+    const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+    const filePath = vscode.Uri.file(wsPath + '/default.nix');
+
+    wsedit.createFile(filePath, { ignoreIfExists: true });
+    var encoder = new TextEncoder()
+    vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
+
+
+    vscode.workspace.applyEdit(wsedit);
+    vscode.window.showInformationMessage('Created a new file: default.nix');
+  }
 }
 let defaultNixFileContent = `let
 holonixPath = builtins.fetchTarball {

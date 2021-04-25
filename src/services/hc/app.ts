@@ -31,6 +31,7 @@ export class AppPack implements ICommand {
                 If not specified, the file will be placed inside the input directory, and given the name "[DNA_NAME].dna"`,
             }
         ] as HcCommandInput[];
+    
         let params = await displayTextBoxCommand(def);
         getActiveTerminal().sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 
