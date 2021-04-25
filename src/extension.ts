@@ -19,41 +19,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "holochainer" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let nixShell = vscode.commands.registerCommand('holochainer.nix', () => {
-		terminal().sendText("nix-shell .");
-	});
-	let createDefaultNixFile = vscode.commands.registerCommand("holochainer.defaultNix", () => {
-		const wsedit = new vscode.WorkspaceEdit();
-		if (vscode.workspace.workspaceFolders == undefined) {
-			vscode.window.showInformationMessage('Open a workspace to create the default nix file');
-			return;
-		}
 
-		const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
-		const filePath = vscode.Uri.file(wsPath + '/default.nix');
-
-		wsedit.createFile(filePath, { ignoreIfExists: true });
-		var encoder = new TextEncoder()
-		vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
-
-
-		vscode.workspace.applyEdit(wsedit);
-		vscode.window.showInformationMessage('Created a new file: default.nix');
-
-	});
-	let compileToWasm = vscode.commands.registerCommand("holochainer.compileToWasm", () => {
-		terminal().sendText("CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown");
-	})
 	var holochainer = new Holochainer();
 	
 	holochainer.registerCommands(context);
 
-	context.subscriptions.push(nixShell);
-	context.subscriptions.push(createDefaultNixFile);
-	context.subscriptions.push(compileToWasm);
 
 
 }

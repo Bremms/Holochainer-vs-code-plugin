@@ -11,8 +11,8 @@
     ],
     "activationEvents": [
         "onCommand:holochainer.nix",
-        "onCommand:holochainer.defaultNix",
-        "onCommand:holochainer.compileToWasm",
+        "onCommand:holochainer.nix.defaultNix",
+        "onCommand:holochainer.wasm.compile",
         "onCommand:holochainer.dna.init",
         "onCommand:holochainer.dna.pack",
         "onCommand:holochainer.dna.unpack",
@@ -27,11 +27,11 @@
                 "title": "Holo Enter into nix-shell"
             },
             {
-                "command": "holochainer.defaultNix",
+                "command": "holochainer.nix.defaultNix",
                 "title": "Holo Create a default nix file"
             },
             {
-                "command": "holochainer.compileToWasm",
+                "command": "holochainer.wasm.compile",
                 "title": "Holo Compile zomes into wasm"
             },
             {
@@ -45,18 +45,20 @@
             {
                 "command": "holochainer.dna.unpack",
                 "title": "Holo Unpack the parts of `.dna` file out into a directory."
-            }, {
+            },
+            {
                 "command": "holochainer.app.init",
                 "title": "Holo Create a new, empty Holochain app (hApp) working directory"
-            }, {
+            },
+            {
                 "command": "holochainer.app.pack",
                 "title": "Holo Pack the contents of a directory into a `.happ` bundle file."
-            }, {
+            },
+            {
                 "command": "holochainer.app.pack",
                 "title": "Holo Unpack the parts of `.happ` file out into a directory."
             }
         ]
-
     },
     "scripts": {
         "vscode:prepublish": "npm run package",
@@ -84,6 +86,8 @@
         "ts-loader": "^8.0.14",
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0"
-    }
+    },
+    "dependencies": {
 
+    }
 }
