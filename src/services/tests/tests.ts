@@ -7,7 +7,7 @@ export class InitTests implements ICommand {
     execute = async () => {
         const wsedit = new vscode.WorkspaceEdit();
         if (vscode.workspace.workspaceFolders == undefined) {
-          vscode.window.showInformationMessage('Open a workspace to create the default nix file');
+          vscode.window.showInformationMessage('Open a workspace to create the test directories');
           return;
         }
         const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder

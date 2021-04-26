@@ -20,7 +20,8 @@
         "onCommand:holochainer.app.pack",
         "onCommand:holochainer.app.unpack",
         "onCommand:holochainer.tests.init",
-        "onCommand:holochainer.zomes.create"
+        "onCommand:holochainer.zomes.create",
+        "onCommand:holochainer.zomes.init"
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -74,6 +75,10 @@
             {
                 "command": "holochainer.zomes.create",
                 "title": "Create a new zome"
+            },
+            {
+                "command": "holochainer.zomes.init",
+                "title": "Holo Initialize the zomes working directory"
             }
         ]
     },

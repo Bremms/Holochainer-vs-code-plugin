@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import { createDefaultNix, enterNix } from "./nix/nix";
 import { compileToWasm } from "./wasm/wasm";
 import { InitTests } from "./tests/tests";
-import { createZome } from "./zomes/zomes";
+import { createZome, initZome } from "./zomes/zomes";
 
 export class Holochainer {
     private _hcCommands = [new AppInit(), new AppPack(), new AppUnPack(),
@@ -15,7 +15,7 @@ export class Holochainer {
     private _nixCommands = [new enterNix(),new createDefaultNix()] as ICommand[];
     private _wasmCommands = [new compileToWasm()] as ICommand[];
     private _testsCommands = [new InitTests()] as ICommand[];
-    private _zomeCommands = [new createZome()]
+    private _zomeCommands = [new createZome(),new initZome()]
 
     registerCommands = (context: vscode.ExtensionContext) => {
         let all = [...this._hcCommands,...this._nixCommands,...this._wasmCommands,...this._testsCommands,...this._zomeCommands];

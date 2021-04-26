@@ -3,14 +3,14 @@ import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
 
 export const getRootOfVsCodeExtension = () => {
-    var myExtDir =vscode.env.appRoot;
+    var myExtDir = vscode.env.appRoot;
     return myExtDir;
 }
-export const getTemplateFile = (fileName :string) => {
+export const getTemplateFile = (fileName: string) => {
     var root = getRootOfVsCodeExtension();
     var path = `${root}\\src\\templates\\${fileName}`;
     var vscodeUri = vscode.Uri.parse(path);
-   return vscode.workspace.fs.readFile(vscodeUri);
+    return vscode.workspace.fs.readFile(vscodeUri);
 }
 export const getActiveTerminal = (show: boolean = true): vscode.Terminal => {
     let terminal = vscode.window.activeTerminal == null ? vscode.window.createTerminal() : vscode.window.activeTerminal;
@@ -20,12 +20,28 @@ export const getActiveTerminal = (show: boolean = true): vscode.Terminal => {
 
     return terminal;
 }
-export const displayTextBoxCommand = async (params: HcCommandInput[]): Promise<string[]> => {
+/*
+    Params: Contains a list of (defaulVal & message to prompt the user)
+    Answers: Give pre defined answers to 'automize' if inputs are already known. 
+*/
+export const displayTextBoxCommand = async (params: HcCommandInput[], answers?: string[]): Promise<string[]> => {
     var result = [] as any[]
     for (var index = 0; index < params.length; index++) {
-        let input = params[index];
-        let val = await vscode.window.showInputBox(input);
-        result.push(val);
+        let showInputBox = true;
+
+        if (answers!=null && answers.length - 1 <= index) {
+            let answ = answers[index];
+            if (answ != null) {
+                showInputBox = false;
+                result.push(answ);
+            }
+        }
+        if(showInputBox){
+            let input = params[index];
+            let val = await vscode.window.showInputBox(input);
+            result.push(val);
+        }
+    
     }
     return result;
 }
