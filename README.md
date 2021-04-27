@@ -64,6 +64,10 @@ Command palette commando's
 ```sh
  Holo zomes init
 ```
+> Deploy the hApp to a local sandbox Holochain by running this in your nix-shell (hc sandbox generate)
+```sh
+Holo sandbox generate
+```
 Explorer
 
 > Zome create - Right-click on a folder the item 'Create a new zome' will pop up.

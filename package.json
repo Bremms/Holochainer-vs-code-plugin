@@ -21,7 +21,8 @@
         "onCommand:holochainer.app.unpack",
         "onCommand:holochainer.tests.init",
         "onCommand:holochainer.zomes.create",
-        "onCommand:holochainer.zomes.init"
+        "onCommand:holochainer.zomes.init",
+        "onCommand:holochainer.sandbox.generate"
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -79,6 +80,10 @@
             {
                 "command": "holochainer.zomes.init",
                 "title": "Holo zomes init. Initialize the zomes working directory"
+            },
+            {
+                "command": "holochainer.sandbox.generate",
+                "title": "Holo sandbox generate. Deploy the hApp to a local sandbox Holochain by running this in your nix-shell"
             }
         ]
     },
