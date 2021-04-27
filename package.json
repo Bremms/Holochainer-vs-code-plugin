@@ -34,43 +34,43 @@
         },
         "commands": [{
                 "command": "holochainer.nix",
-                "title": "Holo Enter into nix-shell"
+                "title": "Holo nix shell. Enter into nix-shell"
             },
             {
                 "command": "holochainer.nix.defaultNix",
-                "title": "Holo Create a default nix file"
+                "title": "Holo nix create. Create a default nix file"
             },
             {
                 "command": "holochainer.wasm.compile",
-                "title": "Holo Compile zomes into wasm"
+                "title": "Holo Compile wasm. Compiles zomes into wasm"
             },
             {
                 "command": "holochainer.dna.init",
-                "title": "Holo Build the dna file"
+                "title": "Holo dna init. Build the dna file"
             },
             {
                 "command": "holochainer.dna.pack",
-                "title": "Holo Package the WASM into a DNA file"
+                "title": "Holo dna pack. Package the WASM into a DNA file"
             },
             {
                 "command": "holochainer.dna.unpack",
-                "title": "Holo Unpack the parts of `.dna` file out into a directory."
+                "title": "Holo dna unpack. Unpack the parts of `.dna` file out into a directory."
             },
             {
                 "command": "holochainer.app.init",
-                "title": "Holo Create a new, empty Holochain app (hApp) working directory"
+                "title": "Holo app init. Create a new, empty Holochain app (hApp) working directory"
             },
             {
                 "command": "holochainer.app.pack",
-                "title": "Holo Pack the contents of a directory into a `.happ` bundle file."
+                "title": "Holo app pack. Pack the contents of a directory into a `.happ` bundle file."
             },
             {
-                "command": "holochainer.app.pack",
-                "title": "Holo Unpack the parts of `.happ` file out into a directory."
+                "command": "holochainer.app.unpack",
+                "title": "Holo app unpack.Unpacks the parts of `.happ` file out into a directory."
             },
             {
                 "command": "holochainer.tests.init",
-                "title": "Holo initialize typescript tests"
+                "title": "Holo tests init. Initializes typescript tests"
             },
             {
                 "command": "holochainer.zomes.create",
@@ -78,7 +78,7 @@
             },
             {
                 "command": "holochainer.zomes.init",
-                "title": "Holo Initialize the zomes working directory"
+                "title": "Holo zomes init. Initialize the zomes working directory"
             }
         ]
     },
