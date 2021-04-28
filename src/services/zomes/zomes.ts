@@ -14,7 +14,7 @@ export class initZome implements ICommand {
 
     const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
     let zomesPath = vscode.Uri.file(`${wsPath}/zomes`);
-    vscode.workspace.fs.createDirectory(zomesPath);
+    await vscode.workspace.fs.createDirectory(zomesPath);
     var createCmd = new createZome();
 
     await createCmd.execute({ path: zomesPath.path, answers: [null, "y"] });
@@ -24,6 +24,14 @@ export class initZome implements ICommand {
 export class createZome implements ICommand {
   name = "holochainer.zomes.create";
   execute = async (args: any) => {
+
+    if (vscode.workspace.workspaceFolders == undefined) {
+      vscode.window.showInformationMessage('Open a workspace to create the zome directory');
+      return;
+    }
+
+    const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+
     var folderClicked = args.path;
     const def = [
       {
@@ -37,20 +45,20 @@ export class createZome implements ICommand {
     ] as HcCommandInput[];
     let textEncoder = new TextEncoder();
 
-    let params = await displayTextBoxCommand(def,args.answers);
+    let params = await displayTextBoxCommand(def, args.answers);
     var rootPath = vscode.Uri.file(folderClicked);
     var folderName = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
 
-    let rootCargoDir = vscode.Uri.file(`${folderClicked}\\Cargo.toml`);
-    let srcPath = vscode.Uri.file(`${folderClicked}\\${params[0]}\\src`);
-    let zomeFilePath = vscode.Uri.file(`${folderClicked}\\${params[0]}\\src\\lib.rs`);
-    let cargoDefaultFilePath = vscode.Uri.file(`${folderClicked}\\${params[0]}\\Cargo.toml`);
-    vscode.workspace.fs.createDirectory(srcPath);
-    vscode.workspace.fs.writeFile(zomeFilePath, textEncoder.encode(defaultZome));
-    vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, params[0])));
+    let rootCargoDir = vscode.Uri.file(`${wsPath}/Cargo.toml`);
+    let srcPath = vscode.Uri.file(`${folderClicked}/${params[0]}/src`);
+    let zomeFilePath = vscode.Uri.file(`${folderClicked}/${params[0]}/src/lib.rs`);
+    let cargoDefaultFilePath = vscode.Uri.file(`${folderClicked}/${params[0]}/Cargo.toml`);
+    await vscode.workspace.fs.createDirectory(srcPath);
+    await vscode.workspace.fs.writeFile(zomeFilePath, textEncoder.encode(defaultZome));
+    await vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, params[0])));
 
     if (params[1]?.toLowerCase() == "y") {
-      vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, params[0])));
+      await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, params[0])));
     }
     vscode.window.showInformationMessage(`Zome '${params[0]}' created `);
   }
@@ -58,9 +66,20 @@ export class createZome implements ICommand {
 
 let defaultZome = `use hdk::prelude::*;
 
+entry_defs![Greeting::entry_def()];
+
+#[hdk_entry(id = "greeting")]
+pub struct Greeting(String);
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct SomeExternalInput {
+    content: String,
+}
+
 #[hdk_extern]
-pub fn hello(_: ()) -> ExternResult<String> {
-Ok(String::from("Hello Holo Dev"))
+pub fn say_greeting(input: SomeExternalInput) -> ExternResult<HeaderHash> {
+    let greeting: Greeting = Greeting(input.content);
+    create_entry(greeting)
 }`
 
 let defaultCargo = `

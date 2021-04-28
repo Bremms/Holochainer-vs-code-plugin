@@ -2,6 +2,16 @@ import { FILE } from 'node:dns';
 import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
 
+export const getWorkspace = () => {
+    const wsedit = new vscode.WorkspaceEdit();
+    if (vscode.workspace.workspaceFolders == undefined) {
+        vscode.window.showInformationMessage('Open a workspace to create the test directories');
+        return;
+    }
+    const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+
+    return wsPath;
+}
 export const getRootOfVsCodeExtension = () => {
     var myExtDir = vscode.env.appRoot;
     return myExtDir;
@@ -29,19 +39,19 @@ export const displayTextBoxCommand = async (params: HcCommandInput[], answers?: 
     for (var index = 0; index < params.length; index++) {
         let showInputBox = true;
 
-        if (answers!=null && answers.length - 1 <= index) {
+        if (answers != null && answers.length - 1 <= index) {
             let answ = answers[index];
             if (answ != null) {
                 showInputBox = false;
                 result.push(answ);
             }
         }
-        if(showInputBox){
+        if (showInputBox) {
             let input = params[index];
             let val = await vscode.window.showInputBox(input);
             result.push(val);
         }
-    
+
     }
     return result;
 }

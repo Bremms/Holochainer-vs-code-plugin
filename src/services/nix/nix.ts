@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { TextEncoder } from 'util';
 export class enterNix implements ICommand {
   name = "holochainer.nix";
-  execute = async (args : any) => {
+  execute = async (args: any) => {
 
     getActiveTerminal().sendText("nix-shell .");
   }
@@ -20,17 +20,17 @@ export class createDefaultNix implements ICommand {
       return;
     }
     //Fetch template file
-  //  var nixDefaultContent = await getTemplateFile("default-nix.txt");
+    //  var nixDefaultContent = await getTemplateFile("default-nix.txt");
 
     const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
     const filePath = vscode.Uri.file(wsPath + '/default.nix');
 
-    wsedit.createFile(filePath, { ignoreIfExists: true });
+    await wsedit.createFile(filePath, { ignoreIfExists: true });
     var encoder = new TextEncoder()
-    vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
+    await vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
 
 
-    vscode.workspace.applyEdit(wsedit);
+    await vscode.workspace.applyEdit(wsedit);
     vscode.window.showInformationMessage('Created a new file: default.nix');
   }
 }
@@ -53,4 +53,4 @@ holonix = import (holonixPath) {
    };
   };
 };
-in holonix.main`
+in holonix.main` 

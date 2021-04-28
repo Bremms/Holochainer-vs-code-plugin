@@ -3,30 +3,31 @@ import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from "util";
 export class InitTests implements ICommand {
-    name = "holochainer.tests.init";
-    execute = async () => {
-        const wsedit = new vscode.WorkspaceEdit();
-        if (vscode.workspace.workspaceFolders == undefined) {
-          vscode.window.showInformationMessage('Open a workspace to create the test directories');
-          return;
-        }
-        const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
-        const filePath = vscode.Uri.file(wsPath + '/tests/src');
-        var testsPath = wsPath + '\\tests';
-        let textEncoder = new TextEncoder();
-        const tsconfigPath = vscode.Uri.file(wsPath + "/tests/tsconfig.json");
-        const packageJsonPath = vscode.Uri.file(wsPath + "/tests/package.json");
-        const defaultTestFilePath = vscode.Uri.file(wsPath + "/tests/src/index.ts");
-        vscode.workspace.fs.createDirectory(filePath);
-        vscode.workspace.fs.writeFile(tsconfigPath,textEncoder.encode(tsconfigFile));
-        vscode.workspace.fs.writeFile(packageJsonPath,textEncoder.encode(packageJsonFile));
-        vscode.workspace.fs.writeFile(defaultTestFilePath,textEncoder.encode(defaultTestFile));
-        getActiveTerminal().sendText(`cd ${testsPath}`);
-        getActiveTerminal().sendText(`npm install`);
+  name = "holochainer.tests.init";
+  execute = async () => {
+    const wsedit = new vscode.WorkspaceEdit();
+    if (vscode.workspace.workspaceFolders == undefined) {
+      vscode.window.showInformationMessage('Open a workspace to create the test directories');
+      return;
     }
+    const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+    const filePath = vscode.Uri.file(wsPath + '/tests/src');
+    var testsPath = wsPath + '/tests';
+    let textEncoder = new TextEncoder();
+    const tsconfigPath = vscode.Uri.file(wsPath + "/tests/tsconfig.json");
+    const packageJsonPath = vscode.Uri.file(wsPath + "/tests/package.json");
+    const defaultTestFilePath = vscode.Uri.file(wsPath + "/tests/src/index.ts");
+    await vscode.workspace.fs.createDirectory(filePath);
+    await vscode.workspace.fs.writeFile(tsconfigPath, textEncoder.encode(tsconfigFile));
+    await vscode.workspace.fs.writeFile(packageJsonPath, textEncoder.encode(packageJsonFile));
+    await vscode.workspace.fs.writeFile(defaultTestFilePath, textEncoder.encode(defaultTestFile));
+   
+    getActiveTerminal().sendText(`cd ${testsPath}`);
+    getActiveTerminal().sendText(`npm install`);
   }
+}
 
-  let tsconfigFile = `{
+let tsconfigFile = `{
     "compilerOptions": {
       "target": "es5",
       "module": "commonjs",
@@ -38,7 +39,7 @@ export class InitTests implements ICommand {
       "forceConsistentCasingInFileNames": true
     }
   }`;
-  let packageJsonFile =`{
+let packageJsonFile = `{
     "name": "hello-integration-tests",
     "version": "0.0.1",
     "description": "An integration test runner using Tryorama",
@@ -59,7 +60,7 @@ export class InitTests implements ICommand {
       "typescript": "^4.2.3"
     }
   }`
-  let defaultTestFile = `import path from "path";
+let defaultTestFile = `import path from "path";
   import { Orchestrator, Config, InstallAgentsHapps } from "@holochain/tryorama";
   //Based on this tutorial: https://hackmd.io/rNCiNe_zQ7aT3oKEl8UCqQ
   
