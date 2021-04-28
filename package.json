@@ -1,7 +1,7 @@
 {
     "name": "holochainer",
     "displayName": "Holochainer",
-    "description": "Extension to create holochain h'app",
+    "description": "Extension to create holochain h'apps",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.55.0"
