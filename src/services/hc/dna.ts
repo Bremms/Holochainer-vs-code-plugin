@@ -14,7 +14,8 @@ export class DnaPack implements ICommand {
         ] as HcCommandInput[];
 
         let params = await displayTextBoxCommand(def);
-        getActiveTerminal().sendText(`hc dna pack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? 'workdir/dna' : params[2]} `)
+        var workDirPath = getWorkspace();
+        getActiveTerminal().sendText(`hc dna pack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `${workDirPath}/workdir/dna` : params[2]} `)
     }
 }
 export class DnaUnPack implements ICommand {
