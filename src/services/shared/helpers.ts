@@ -2,6 +2,9 @@ import { FILE } from 'node:dns';
 import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
 
+export const goToActiveWorkspace = () => {
+    getActiveTerminal().sendText(`cd ${getWorkspace()}`);
+}
 export const getWorkspace = () => {
     const wsedit = new vscode.WorkspaceEdit();
     if (vscode.workspace.workspaceFolders == undefined) {

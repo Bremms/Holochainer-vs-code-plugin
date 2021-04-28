@@ -1,6 +1,6 @@
 import { HcCommandInput, ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
-import { displayTextBoxCommand, executeCmdCommand, getActiveTerminal, getWorkspace } from "../shared/helpers";
+import { displayTextBoxCommand, executeCmdCommand, getActiveTerminal, getWorkspace, goToActiveWorkspace } from "../shared/helpers";
 
 export class DnaPack implements ICommand {
     name = "holochainer.dna.pack";
@@ -14,8 +14,8 @@ export class DnaPack implements ICommand {
         ] as HcCommandInput[];
 
         let params = await displayTextBoxCommand(def);
-        var workDirPath = getWorkspace();
-        getActiveTerminal().sendText(`hc dna pack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `${workDirPath}/workdir/dna` : params[2]} `)
+        goToActiveWorkspace();
+        getActiveTerminal().sendText(`hc dna pack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `workdir/dna` : params[2]} `)
     }
 }
 export class DnaUnPack implements ICommand {
@@ -35,8 +35,8 @@ export class DnaUnPack implements ICommand {
         ] as HcCommandInput[];
 
         let params = await displayTextBoxCommand(def);
-        var workDirPath = getWorkspace();
-        getActiveTerminal().sendText(`hc dna unpack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `${workDirPath}/workdir/dna` : params[1]} `)
+        goToActiveWorkspace()
+        getActiveTerminal().sendText(`hc dna unpack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `workdir/dna` : params[1]} `)
     }
 }
 export class DnaInit implements ICommand {
@@ -50,6 +50,7 @@ export class DnaInit implements ICommand {
         ] as HcCommandInput[];
 
         let params = await displayTextBoxCommand(def);
+        goToActiveWorkspace();
         getActiveTerminal().sendText(`hc dna init ${params[0] == "" ? 'workdir/dna' : params[0]}`);
     }
 }
