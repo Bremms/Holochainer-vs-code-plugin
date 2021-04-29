@@ -1,7 +1,26 @@
 import { FILE } from 'node:dns';
 import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
+import * as fs from 'fs'; 
+export const tryOpenFile = (ms: number, filePath: string) => {
+    async () => {
+        let sleepAmtMs = 200;
+        let msRan = 0;
+        while (msRan < ms) {
+            if(fs.existsSync(filePath)){
+                openFileInEditor(filePath);
+                break;
+            }
+           
+            sleep(sleepAmtMs);
+            msRan += sleepAmtMs;
+        }
 
+    }
+}
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 export const openFileInEditor = async (filePath: string) => {
 
     await vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
