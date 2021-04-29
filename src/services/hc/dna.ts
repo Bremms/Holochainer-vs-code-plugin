@@ -1,6 +1,6 @@
 import { HcCommandInput, ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
-import { displayTextBoxCommand, executeCmdCommand, getActiveTerminal, getWorkspace, goToActiveWorkspace } from "../shared/helpers";
+import { displayTextBoxCommand, executeCmdCommand, getActiveTerminal, getWorkspace, goToActiveWorkspace, openFileInEditor } from "../shared/helpers";
 
 export class DnaPack implements ICommand {
     name = "holochainer.dna.pack";
@@ -51,6 +51,11 @@ export class DnaInit implements ICommand {
 
         let params = await displayTextBoxCommand(def);
         goToActiveWorkspace();
-        getActiveTerminal().sendText(`hc dna init ${params[0] == "" ? 'workdir/dna' : params[0]}`);
+        var workSpacePath = getWorkspace();
+        let path  = params[0] == "" ? 'workdir/dna' : params[0];
+        let dnaYamlPath = `${workSpacePath}/path`;
+        getActiveTerminal().sendText(`hc dna init ${path}`);
+
+        openFileInEditor(dnaYamlPath);
     }
 }

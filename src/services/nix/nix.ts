@@ -1,4 +1,4 @@
-import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, getWorkspace, goToActiveWorkspace } from "../shared/helpers";
+import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, getWorkspace, goToActiveWorkspace, openFileInEditor } from "../shared/helpers";
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from 'util';
@@ -23,11 +23,11 @@ export class createDefaultNix implements ICommand {
     var encoder = new TextEncoder()
     await vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
 
-
-    vscode.workspace.applyEdit(wsedit);
-    vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
-      vscode.window.showTextDocument(textDoc);
-    })
+    openFileInEditor(filePath.toString())
+    // vscode.workspace.applyEdit(wsedit);
+    // vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
+    //   vscode.window.showTextDocument(textDoc);
+    // })
     vscode.window.showInformationMessage('Created a new file: default.nix');
   }
 }
