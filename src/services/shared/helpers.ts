@@ -1,22 +1,22 @@
 import { FILE } from 'node:dns';
 import * as vscode from 'vscode';
 import { HcCommandInput } from './ICommand';
-import * as fs from 'fs'; 
-export const tryOpenFile = (ms: number, filePath: string) => {
-    async () => {
-        let sleepAmtMs = 200;
-        let msRan = 0;
-        while (msRan < ms) {
-            if(fs.existsSync(filePath)){
-                openFileInEditor(filePath);
-                break;
-            }
-           
-            sleep(sleepAmtMs);
-            msRan += sleepAmtMs;
+import * as fs from 'fs';
+export const tryOpenFile = async (ms: number, filePath: string) => {
+
+    let sleepAmtMs = 1000;
+    let msRan = 0;
+    while (msRan < ms) {
+        if (fs.existsSync(filePath)) {
+            openFileInEditor(filePath);
+            break;
         }
 
+        await sleep(sleepAmtMs);
+        msRan += sleepAmtMs;
     }
+
+
 }
 function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
