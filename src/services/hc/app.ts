@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { displayTextBoxCommand, getActiveTerminal } from '../shared/helpers';
+import { displayTextBoxCommand, getActiveTerminal, goToActiveWorkspace } from '../shared/helpers';
 import { HcCommandInput, ICommand } from '../shared/ICommand';
 
 export class AppInit implements ICommand {
+   
     name = "holochainer.app.init";
     execute = async () => {
         const def = [
@@ -11,8 +12,9 @@ export class AppInit implements ICommand {
                 prompt: "Select a path. If none supplied 'workdir/happ' will be taken instead",
             },
         ] as HcCommandInput[];
-
+       
         let params = await displayTextBoxCommand(def);
+        goToActiveWorkspace();
         getActiveTerminal().sendText(`hc app init ${params[0] == "" ? 'workdir/happ' : params[1]}`);
     }
 }
@@ -33,6 +35,7 @@ export class AppPack implements ICommand {
         ] as HcCommandInput[];
     
         let params = await displayTextBoxCommand(def);
+        goToActiveWorkspace();
         getActiveTerminal().sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 
     }
@@ -53,6 +56,7 @@ export class AppUnPack implements ICommand {
             }
         ] as HcCommandInput[];
         let params = await displayTextBoxCommand(def);
+        goToActiveWorkspace();
         getActiveTerminal().sendText(`hc app unpack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 
     }

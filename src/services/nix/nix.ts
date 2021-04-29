@@ -1,11 +1,11 @@
-import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile } from "../shared/helpers";
+import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, getWorkspace, goToActiveWorkspace } from "../shared/helpers";
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from 'util';
 export class enterNix implements ICommand {
   name = "holochainer.nix";
   execute = async (args: any) => {
-
+    goToActiveWorkspace();
     getActiveTerminal().sendText("nix-shell .");
   }
 }
@@ -15,14 +15,8 @@ export class createDefaultNix implements ICommand {
   name = "holochainer.nix.defaultNix";
   execute = async () => {
     const wsedit = new vscode.WorkspaceEdit();
-    if (vscode.workspace.workspaceFolders == undefined) {
-      vscode.window.showInformationMessage('Open a workspace to create the default nix file');
-      return;
-    }
-    //Fetch template file
-    //  var nixDefaultContent = await getTemplateFile("default-nix.txt");
-
-    const wsPath = vscode.workspace.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+    goToActiveWorkspace();
+    var wsPath = getWorkspace();
     const filePath = vscode.Uri.file(wsPath + '/default.nix');
 
     await wsedit.createFile(filePath, { ignoreIfExists: true });
@@ -30,7 +24,10 @@ export class createDefaultNix implements ICommand {
     await vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
 
 
-    await vscode.workspace.applyEdit(wsedit);
+    vscode.workspace.applyEdit(wsedit);
+    vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
+      vscode.window.showTextDocument(textDoc);
+    })
     vscode.window.showInformationMessage('Created a new file: default.nix');
   }
 }
@@ -53,4 +50,4 @@ holonix = import (holonixPath) {
    };
   };
 };
-in holonix.main` 
+in holonix.main`
