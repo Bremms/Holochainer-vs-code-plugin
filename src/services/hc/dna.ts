@@ -53,7 +53,7 @@ export class DnaInit implements ICommand {
         goToActiveWorkspace();
         var workSpacePath = getWorkspace();
         let path  = params[0] == "" ? 'workdir/dna' : params[0];
-        let dnaYamlPath = `${workSpacePath}/path`;
+        let dnaYamlPath = `${workSpacePath}/${path}/dna.yaml`;
         getActiveTerminal().sendText(`hc dna init ${path}`);
 
         openFileInEditor(dnaYamlPath);
