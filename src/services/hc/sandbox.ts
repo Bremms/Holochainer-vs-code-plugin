@@ -17,7 +17,7 @@ export class SandboxGenerate implements ICommand {
             },
             {
                 value: '',
-                prompt: ` You may optionally specify app interface ports to bind when running. This allows your UI to talk to the
+                prompt: `(Optional) You may optionally specify app interface ports to bind when running. This allows your UI to talk to the
                 conductor.
                 
                 For example, "0,9000,0" will create three app interfaces. Or, specify nothing to run
@@ -28,11 +28,11 @@ export class SandboxGenerate implements ICommand {
             },
             {
                 value: '',
-                prompt: `Set a root directory for conductor sandboxes to be placed into. Defaults to the system's temp directory. This directory must already exist.`
+                prompt: `(Optional) Set a root directory for conductor sandboxes to be placed into. Defaults to the system's temp directory. This directory must already exist.`
             }
         ] as HcCommandInput[];
         let params = await displayTextBoxCommand(def);
-        getActiveTerminal().sendText(`hc sandbox generate ${params[0] == '' ? 'workdir/dna' : params[0]} ${params[1] == '' ? '' : `--app-id=${params[1]}`} ${params[2] == '' ? '' : `--run=${params[2]}`} ${params[3] == '' ? '' : `--num-sandboxes=${params[3]}`} ${params[4] == '' ? '' : `--root=${params[4]}`}`)
+        getActiveTerminal().sendText(`hc sandbox generate ${params[0] == '' ? 'workdir/happ' : params[0]} ${params[1] == '' ? '' : `--app-id=${params[1]}`} ${params[2] == '' ? '' : `--run=${params[2]}`} ${params[3] == '' ? '' : `--num-sandboxes=${params[3]}`} ${params[4] == '' ? '' : `--root=${params[4]}`}`)
 
 
 

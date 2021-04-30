@@ -22,21 +22,19 @@
         "onCommand:holochainer.tests.init",
         "onCommand:holochainer.zomes.create",
         "onCommand:holochainer.zomes.init",
-        "onCommand:holochainer.sandbox.generate"
+        "onCommand:holochainer.sandbox.generate",
+        "holochainer.js.installConductorApi"
     ],
     "main": "./dist/extension.js",
     "contributes": {
         "menus": {
-            "explorer/context": [
-                {
-                    "when": "explorerResourceIsFolder",
-                    "command": "holochainer.zomes.create",
-                    "group": "holochainer"
-                }
-            ]
+            "explorer/context": [{
+                "when": "explorerResourceIsFolder",
+                "command": "holochainer.zomes.create",
+                "group": "holochainer"
+            }]
         },
-        "commands": [
-            {
+        "commands": [{
                 "command": "holochainer.nix",
                 "title": "Holo nix shell. Enter into nix-shell"
             },
@@ -87,6 +85,10 @@
             {
                 "command": "holochainer.sandbox.generate",
                 "title": "Holo sandbox generate. Deploy the hApp to a local sandbox Holochain by running this in your nix-shell"
+            },
+            {
+                "command": "holochainer.js.installConductorApi",
+                "title": "Holo install npm package holochain/conductor-api"
             }
         ]
     },
