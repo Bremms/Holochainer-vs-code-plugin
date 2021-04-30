@@ -23,7 +23,7 @@
         "onCommand:holochainer.zomes.create",
         "onCommand:holochainer.zomes.init",
         "onCommand:holochainer.sandbox.generate",
-        "holochainer.js.installConductorApi"
+        "onCommand:holochainer.js.installConductorApi"
     ],
     "main": "./dist/extension.js",
     "contributes": {
