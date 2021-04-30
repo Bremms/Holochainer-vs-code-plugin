@@ -1,4 +1,4 @@
-import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile } from "../shared/helpers";
+import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, openFileInEditor } from "../shared/helpers";
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from "util";
@@ -24,6 +24,8 @@ export class InitTests implements ICommand {
    
     getActiveTerminal().sendText(`cd ${testsPath}`);
     getActiveTerminal().sendText(`npm install`);
+
+    openFileInEditor(defaultTestFilePath.toString());
   }
 }
 

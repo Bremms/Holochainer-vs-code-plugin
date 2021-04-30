@@ -16,6 +16,7 @@ export class AppInit implements ICommand {
         let params = await displayTextBoxCommand(def);
         goToActiveWorkspace();
         getActiveTerminal().sendText(`hc app init ${params[0] == "" ? 'workdir/happ' : params[1]}`);
+    
     }
 }
 export class AppPack implements ICommand {

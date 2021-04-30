@@ -55,7 +55,9 @@ export class DnaInit implements ICommand {
         let path  = params[0] == "" ? 'workdir/dna' : params[0];
         let dnaYamlPath = `${workSpacePath}/${path}/dna.yaml`;
         getActiveTerminal().sendText(`hc dna init ${path}`);
-        tryOpenFile(20000,dnaYamlPath)
+        vscode.window.showInformationMessage('Folow the instructions in the terminal to proceed.');
+        tryOpenFile(20000,dnaYamlPath);
+      
         // setTimeout(() =>{
         //     openFileInEditor(dnaYamlPath);
         // } ,6000 )
