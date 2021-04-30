@@ -56,7 +56,7 @@ export class createZome implements ICommand {
     await vscode.workspace.fs.createDirectory(srcPath);
     await vscode.workspace.fs.writeFile(zomeFilePath, textEncoder.encode(defaultZome));
     await vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, params[0])));
-    openFileInEditor(zomeFilePath.toString());
+    openFileInEditor(zomeFilePath.path);
     if (params[1]?.toLowerCase() == "y") {
       await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, params[0])));
      

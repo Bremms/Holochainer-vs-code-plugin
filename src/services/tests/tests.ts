@@ -25,7 +25,7 @@ export class InitTests implements ICommand {
     getActiveTerminal().sendText(`cd ${testsPath}`);
     getActiveTerminal().sendText(`npm install`);
 
-    openFileInEditor(defaultTestFilePath.toString());
+    openFileInEditor(defaultTestFilePath.path);
   }
 }
 

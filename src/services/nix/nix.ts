@@ -23,7 +23,7 @@ export class createDefaultNix implements ICommand {
     var encoder = new TextEncoder()
     await vscode.workspace.fs.writeFile(filePath, encoder.encode(defaultNixFileContent));
 
-    openFileInEditor(filePath.toString())
+    openFileInEditor(filePath.path)
     // vscode.workspace.applyEdit(wsedit);
     // vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
     //   vscode.window.showTextDocument(textDoc);
