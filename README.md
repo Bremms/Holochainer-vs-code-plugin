@@ -2,7 +2,7 @@
 ## Vscode plugin for holochain RSM 0.0.1
 
 
-This plugin uses the directory and file structures defined in https://hackmd.io/rNCiNe_zQ7aT3oKEl8UCqQ
+This plugin uses the directory and file structures defined in https://hackmd.io/rNCiNe_zQ7aT3oKEl8UCqQ / HolochainGym (https://holochain-gym.github.io/developers/basic/entries/)
 
 Follow the document to setup holochain and nix.
 

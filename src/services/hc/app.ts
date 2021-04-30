@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { displayTextBoxCommand, getActiveTerminal, goToActiveWorkspace } from '../shared/helpers';
+import { displayTextBoxCommand, getActiveTerminal, getWorkspace, goToActiveWorkspace, tryOpenFile } from '../shared/helpers';
 import { HcCommandInput, ICommand } from '../shared/ICommand';
 
 export class AppInit implements ICommand {
@@ -15,8 +15,13 @@ export class AppInit implements ICommand {
        
         let params = await displayTextBoxCommand(def);
         goToActiveWorkspace();
-        getActiveTerminal().sendText(`hc app init ${params[0] == "" ? 'workdir/happ' : params[1]}`);
+
+        let path = params[0] == "" ? 'workdir/happ' : params[1];
+        getActiveTerminal().sendText(`hc app init ${path}`);
     
+        let workSpacePath = getWorkspace();
+        let dnaYamlPath = `${workSpacePath}/${path}/happ.yaml`;
+        tryOpenFile(20000,dnaYamlPath);
     }
 }
 export class AppPack implements ICommand {
