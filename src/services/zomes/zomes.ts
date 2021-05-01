@@ -98,6 +98,7 @@ crate-type = [ "cdylib", "rlib" ]
 [dependencies]
 hdk = "0.0.100"
 serde = "1"
+holo_hash = "0.0.2-alpha"
 `
 let defaultRootCargo = `
 [workspace]
