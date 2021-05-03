@@ -1,8 +1,16 @@
 {
     "name": "holochainer",
     "displayName": "Holochainer",
+    "publisher": "Bremzor",
     "description": "Extension to create holochain h'apps",
     "version": "0.0.1",
+    "author": {
+        "name": "Arne De Bremme"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Bremms/Holochainer-vs-code-plugin"
+    },
     "engines": {
         "vscode": "^1.55.0"
     },
