@@ -46,7 +46,7 @@ export const getRootOfVsCodeExtension = () => {
 }
 export const getTemplateFile = (fileName: string) => {
     var root = getRootOfVsCodeExtension();
-    var path = `${root}\\src\\templates\\${fileName}`;
+    var path = `${root}/src/templates/${fileName}`;
     var vscodeUri = vscode.Uri.parse(path);
     return vscode.workspace.fs.readFile(vscodeUri);
 }
