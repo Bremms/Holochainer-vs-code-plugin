@@ -9,7 +9,7 @@ Follow the document to setup holochain and nix.
 
 
 ## Installation
-TODO
+Install the extension in vscode
 
 ## Features
 Command palette commando's
