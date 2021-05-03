@@ -77,6 +77,10 @@ export const displayTextBoxCommand = async (params: HcCommandInput[], answers?: 
         if (showInputBox) {
             let input = params[index];
             let val = await vscode.window.showInputBox(input);
+            if(val == undefined) {
+                vscode.window.showInformationMessage('Failed to execute holochainer commando. Aborted by the user');
+                throw "Aborted by user";
+            }
             result.push(val);
         }
 

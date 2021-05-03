@@ -68,6 +68,10 @@ Command palette commando's
 ```sh
 Holo sandbox generate
 ```
+> Installs the conductor-api into the directory the user currently is in (npm install @holochain/conductor-api)
+```sh
+Holo install npm package holochain/conductor-api
+```
 Explorer
 
 > Zome create - Right-click on a folder the item 'Create a new zome' will pop up.

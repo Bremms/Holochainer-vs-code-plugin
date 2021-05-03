@@ -46,22 +46,26 @@ export class createZome implements ICommand {
     let textEncoder = new TextEncoder();
 
     let params = await displayTextBoxCommand(def, args.answers);
-    var rootPath = vscode.Uri.file(folderClicked);
-    var folderName = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
+    var [zomeName, firstZome] = params;
+    if (zomeName == undefined || zomeName == '') zomeName = "zome";
 
+    let rootPath = vscode.Uri.file(folderClicked);
+    let folderName = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
     let rootCargoDir = vscode.Uri.file(`${wsPath}/Cargo.toml`);
-    let srcPath = vscode.Uri.file(`${folderClicked}/${params[0]}/src`);
-    let zomeFilePath = vscode.Uri.file(`${folderClicked}/${params[0]}/src/lib.rs`);
-    let cargoDefaultFilePath = vscode.Uri.file(`${folderClicked}/${params[0]}/Cargo.toml`);
+    let srcPath = vscode.Uri.file(`${folderClicked}/${zomeName}/src`);
+    let zomeFilePath = vscode.Uri.file(`${folderClicked}/${zomeName}/src/lib.rs`);
+    let cargoDefaultFilePath = vscode.Uri.file(`${folderClicked}/${zomeName}/Cargo.toml`);
+
     await vscode.workspace.fs.createDirectory(srcPath);
     await vscode.workspace.fs.writeFile(zomeFilePath, textEncoder.encode(defaultZome));
-    await vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, params[0])));
+    await vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, zomeName)));
     openFileInEditor(zomeFilePath.path);
-    if (params[1]?.toLowerCase() == "y") {
-      await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, params[0])));
-     
+    if (firstZome?.toLowerCase() == "y") {
+      await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, zomeName)));
+
     }
-    vscode.window.showInformationMessage(`Zome '${params[0]}' created `);
+    
+    vscode.window.showInformationMessage(`Zome '${zomeName}' created `);
 
   }
 }

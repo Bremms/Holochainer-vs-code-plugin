@@ -12,7 +12,7 @@ export class SandboxGenerate implements ICommand {
                 prompt: "Select a path. If none supplied 'workdir/happ' will be taken instead",
             },
             {
-                value: '',
+                value: 'test-app',
                 prompt: 'ID for the installed app. This is just a string to identify the app [default: test-app]'
             },
             {
