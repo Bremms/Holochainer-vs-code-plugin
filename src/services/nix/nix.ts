@@ -2,6 +2,7 @@ import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, getWorksp
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from 'util';
+import { defaultNixFileContent } from "../../templates/templateStore";
 export class enterNix implements ICommand {
   name = "holochainer.nix";
   execute = async (args: any) => {

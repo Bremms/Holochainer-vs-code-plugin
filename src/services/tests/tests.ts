@@ -2,6 +2,7 @@ import { getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, openFileI
 import { ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from "util";
+import { defaultTestFile, packageJsonFile, tsconfigFile } from "../../templates/templateStore";
 export class InitTests implements ICommand {
   name = "holochainer.tests.init";
   execute = async () => {

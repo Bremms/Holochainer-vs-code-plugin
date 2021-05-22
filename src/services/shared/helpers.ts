@@ -25,6 +25,7 @@ export const openFileInEditor = async (filePath: string) => {
 
     await vscode.workspace.openTextDocument(filePath).then((textDoc: vscode.TextDocument) => {
         vscode.window.showTextDocument(textDoc);
+        
     })
 }
 export const goToActiveWorkspace = () => {

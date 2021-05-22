@@ -2,7 +2,9 @@ import { displayTextBoxCommand, getActiveTerminal, getRootOfVsCodeExtension, get
 import { HcCommandInput, ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from "util";
-
+import * as fs from 'fs';
+import { defaultCargo, defaultRootCargo, defaultZome } from "../../templates/templateStore";
+var toml = require('toml');
 export class initZome implements ICommand {
   name = "holochainer.zomes.init";
   execute = async (args: any) => {
@@ -49,6 +51,7 @@ export class createZome implements ICommand {
     var [zomeName, firstZome] = params;
     if (zomeName == undefined || zomeName == '') zomeName = "zome";
 
+    //Define all paths to create file
     let rootPath = vscode.Uri.file(folderClicked);
     let folderName = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
     let rootCargoDir = vscode.Uri.file(`${wsPath}/Cargo.toml`);
@@ -56,15 +59,17 @@ export class createZome implements ICommand {
     let zomeFilePath = vscode.Uri.file(`${folderClicked}/${zomeName}/src/lib.rs`);
     let cargoDefaultFilePath = vscode.Uri.file(`${folderClicked}/${zomeName}/Cargo.toml`);
 
+    //Create the directories and files
     await vscode.workspace.fs.createDirectory(srcPath);
     await vscode.workspace.fs.writeFile(zomeFilePath, textEncoder.encode(defaultZome));
     await vscode.workspace.fs.writeFile(cargoDefaultFilePath, textEncoder.encode(defaultCargo.replace(/{zome_name}/g, zomeName)));
     openFileInEditor(zomeFilePath.path);
+
     if (firstZome?.toLowerCase() == "y") {
       await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, zomeName)));
 
-    }
-    
+    } 
+  
     vscode.window.showInformationMessage(`Zome '${zomeName}' created `);
 
   }

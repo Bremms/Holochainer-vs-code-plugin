@@ -1,6 +1,6 @@
 
 
-const defaultZome = `use hdk::prelude::*;
+export const defaultZome = `use hdk::prelude::*;
 
 entry_defs![Greeting::entry_def()];
 
@@ -18,7 +18,7 @@ pub fn say_greeting(input: SomeExternalInput) -> ExternResult<String> {
   Ok(input.content)
 }`
 
-const defaultCargo = `
+export const defaultCargo = `
 [package]
 name = "{zome_name}"
 version = "0.0.1"
@@ -35,7 +35,7 @@ serde = "1"
 holo_hash = "0.0.2-alpha"
 `
 
-const defaultRootCargo = `
+export const defaultRootCargo = `
 [workspace]
 members = [
   "{zome_folder}/{zome_name}",
@@ -47,7 +47,7 @@ opt-level = "z"
 [profile.release]
 opt-level = "z"
 `
-let tsconfigFile = `{
+export const tsconfigFile = `{
     "compilerOptions": {
       "target": "es5",
       "module": "commonjs",
@@ -59,7 +59,7 @@ let tsconfigFile = `{
       "forceConsistentCasingInFileNames": true
     }
   }`;
-  let packageJsonFile = `{
+  export  const packageJsonFile = `{
     "name": "hello-integration-tests",
     "version": "0.0.1",
     "description": "An integration test runner using Tryorama",
@@ -81,7 +81,7 @@ let tsconfigFile = `{
     }
   }`
 
-  let defaultTestFile = `import path from "path";
+  export  const defaultTestFile = `import path from "path";
   import { Orchestrator, Config, InstallAgentsHapps } from "@holochain/tryorama";
   //Based on this tutorial: https://hackmd.io/rNCiNe_zQ7aT3oKEl8UCqQ
   
@@ -118,7 +118,7 @@ let tsconfigFile = `{
   });
   
   orchestrator.run();`
-  let defaultNixFileContent = `let
+  export const defaultNixFileContent = `let
 holonixPath = builtins.fetchTarball {
   url = "https://github.com/holochain/holonix/archive/90a19d5771c069dbcc9b27938009486b54b12fb7.tar.gz";
   sha256 = "11wv7mwliqj38jh1gda3gd0ad0vqz1d42hxnhjmqdp037gcd2cjg";
