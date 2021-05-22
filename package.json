@@ -28,13 +28,16 @@
     "main": "./dist/extension.js",
     "contributes": {
         "menus": {
-            "explorer/context": [{
-                "when": "explorerResourceIsFolder",
-                "command": "holochainer.zomes.create",
-                "group": "holochainer"
-            }]
+            "explorer/context": [
+                {
+                    "when": "explorerResourceIsFolder",
+                    "command": "holochainer.zomes.create",
+                    "group": "holochainer"
+                }
+            ]
         },
-        "commands": [{
+        "commands": [
+            {
                 "command": "holochainer.nix",
                 "title": "Holo nix shell. Enter into nix-shell"
             },
@@ -119,5 +122,7 @@
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "toml": "^3.0.0"
+    }
 }
