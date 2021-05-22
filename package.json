@@ -123,6 +123,7 @@
         "webpack-cli": "^4.4.0"
     },
     "dependencies": {
+        "json2toml": "^2.1.0",
         "toml": "^3.0.0"
     }
 }

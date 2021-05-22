@@ -5,6 +5,7 @@ import { TextEncoder } from "util";
 import * as fs from 'fs';
 import { defaultCargo, defaultRootCargo, defaultZome } from "../../templates/templateStore";
 var toml = require('toml');
+var json2toml = require('json2toml');
 export class initZome implements ICommand {
   name = "holochainer.zomes.init";
   execute = async (args: any) => {
@@ -23,6 +24,7 @@ export class initZome implements ICommand {
     vscode.window.showInformationMessage('Zome directory intialized');
   }
 }
+
 export class createZome implements ICommand {
   name = "holochainer.zomes.create";
   execute = async (args: any) => {
@@ -53,7 +55,7 @@ export class createZome implements ICommand {
 
     //Define all paths to create file
     let rootPath = vscode.Uri.file(folderClicked);
-    let folderName = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
+    let zomeFolder = rootPath.path.split("/")[rootPath.path.split("/").length - 1];
     let rootCargoDir = vscode.Uri.file(`${wsPath}/Cargo.toml`);
     let srcPath = vscode.Uri.file(`${folderClicked}/${zomeName}/src`);
     let zomeFilePath = vscode.Uri.file(`${folderClicked}/${zomeName}/src/lib.rs`);
@@ -66,11 +68,36 @@ export class createZome implements ICommand {
     openFileInEditor(zomeFilePath.path);
 
     if (firstZome?.toLowerCase() == "y") {
-      await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, folderName).replace(/{zome_name}/g, zomeName)));
+      await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(defaultRootCargo.replace(/{zome_folder}/g, zomeFolder).replace(/{zome_name}/g, zomeName)));
 
-    } 
-  
+    } else {
+      //Not the first zome. Check if there is a cargo.toml on the root dir
+      await tryAddZomeToCargoDef(rootCargoDir, `zomes/${zomeName}`);
+    }
+
+
     vscode.window.showInformationMessage(`Zome '${zomeName}' created `);
 
+  }
+}
+const tryAddZomeToCargoDef = async (rootCargoDir: vscode.Uri, zomePath: string) => {
+
+  if (fs.existsSync(rootCargoDir.fsPath)) {
+    let val = await vscode.window.showInputBox({ value: '', prompt: 'Add to root Cargo.toml? (y/n)' });
+    if (val?.toLowerCase() == "y") {
+      try {
+        let defaultCargoToml = await vscode.workspace.openTextDocument(rootCargoDir);
+        var cargoContent = toml.parse(defaultCargoToml.getText());
+        cargoContent.workspace.members.push(zomePath);
+        var tomlNewContent = json2toml(cargoContent,
+          { indent: 2, newlineAfterSection: true });
+        let textEncoder = new TextEncoder();
+        await vscode.workspace.fs.writeFile(rootCargoDir, textEncoder.encode(tomlNewContent));
+        openFileInEditor(rootCargoDir.fsPath)
+
+      } catch (err) {
+
+      }
+    }
   }
 }

@@ -21,8 +21,8 @@ export class Holochainer {
     registerCommands = (context: vscode.ExtensionContext) => {
         let all = [...this._hcCommands, ...this._nixCommands, ...this._wasmCommands, ...this._testsCommands, ...this._zomeCommands, ...this._jsCommands];
         all.forEach((cmd) => {
-            let ctx = vscode.commands.registerCommand(cmd.name, (args) => {
-                cmd.execute(args);
+            let ctx = vscode.commands.registerCommand(cmd.name, async (args) => {
+               await cmd.execute(args);
             })
             context.subscriptions.push(ctx);
         })
