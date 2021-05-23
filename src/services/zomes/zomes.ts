@@ -1,4 +1,4 @@
-import { displayTextBoxCommand, getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, openFileInEditor } from "../shared/helpers";
+import { displayTextBoxCommand, getActiveTerminal, getRootOfVsCodeExtension, getTemplateFile, openFileInEditor, sleep } from "../shared/helpers";
 import { HcCommandInput, ICommand } from "../shared/ICommand";
 import * as vscode from 'vscode';
 import { TextEncoder } from "util";
@@ -72,7 +72,7 @@ export class createZome implements ICommand {
 
     } else {
       //Not the first zome. Check if there is a cargo.toml on the root dir
-      await tryAddZomeToCargoDef(rootCargoDir, `zomes/${zomeName}`);
+      await tryAddZomeToCargoDef(rootCargoDir, `${zomeFolder}/${zomeName}`);
     }
 
 
@@ -81,14 +81,25 @@ export class createZome implements ICommand {
   }
 }
 const tryAddZomeToCargoDef = async (rootCargoDir: vscode.Uri, zomePath: string) => {
-
+  console.log("Try add zome");
   if (fs.existsSync(rootCargoDir.fsPath)) {
+    console.log("Default cargo exist");
+
+    //vscode sometimes didn't show the inputbox.
+    //When delaying this issue wasn't present. Temporary fix needs investing [TODO]
+    await sleep(500);
     let val = await vscode.window.showInputBox({ value: '', prompt: 'Add to root Cargo.toml? (y/n)' });
+    console.log(`Result windows ${val}`);
+    
     if (val?.toLowerCase() == "y") {
       try {
+        //Open the toml file
         let defaultCargoToml = await vscode.workspace.openTextDocument(rootCargoDir);
         var cargoContent = toml.parse(defaultCargoToml.getText());
+        //Push the zomepath into the workspace/members property
         cargoContent.workspace.members.push(zomePath);
+
+        //Convert the json obj to toml, write the file and open the file in the editor
         var tomlNewContent = json2toml(cargoContent,
           { indent: 2, newlineAfterSection: true });
         let textEncoder = new TextEncoder();
@@ -96,7 +107,7 @@ const tryAddZomeToCargoDef = async (rootCargoDir: vscode.Uri, zomePath: string) 
         openFileInEditor(rootCargoDir.fsPath)
 
       } catch (err) {
-
+        vscode.window.showErrorMessage('Failed to write to the default cargo.toml file. ');
       }
     }
   }

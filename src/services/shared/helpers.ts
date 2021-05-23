@@ -18,7 +18,7 @@ export const tryOpenFile = async (ms: number, filePath: string) => {
 
 
 }
-function sleep(ms: number) {
+export function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 export const openFileInEditor = async (filePath: string) => {
