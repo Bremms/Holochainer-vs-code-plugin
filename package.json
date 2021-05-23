@@ -1,6 +1,7 @@
 {
     "name": "holochainer",
     "displayName": "Holochainer",
+    "publisher": "bremzor",
     "description": "Extension to create holochain h'apps",
     "version": "0.0.1",
     "engines": {
@@ -123,7 +124,9 @@
         "webpack-cli": "^4.4.0"
     },
     "dependencies": {
+        "inversify": "^5.1.1",
         "json2toml": "^2.1.0",
+        "reflect-metadata": "^0.1.13",
         "toml": "^3.0.0"
     }
 }

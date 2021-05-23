@@ -1,11 +1,17 @@
+import { inject, injectable } from 'inversify';
 import * as vscode from 'vscode';
-import { displayTextBoxCommand, getActiveTerminal, getWorkspace, goToActiveWorkspace, tryOpenFile } from '../shared/helpers';
+import TYPES from '../../dependencyInjection/types';
 import { HcCommandInput, ICommand } from '../shared/ICommand';
+import { IVsCodeService } from '../shared/vscodeService';
 
+@injectable()
 export class AppInit implements ICommand {
    
+    constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
+
     name = "holochainer.app.init";
-    execute = async () => {
+    execute = async (args: any) => {
+        
         const def = [
             {
                 value: '',
@@ -13,18 +19,21 @@ export class AppInit implements ICommand {
             },
         ] as HcCommandInput[];
        
-        let params = await displayTextBoxCommand(def);
-        goToActiveWorkspace();
+        let params = await this.vscodeService.displayTextBoxCommand(def,args.answers);
+        this.vscodeService.goToActiveWorkspace();
 
         let path = params[0] == "" ? 'workdir/happ' : params[1];
-        getActiveTerminal().sendText(`hc app init ${path}`);
-    
-        let workSpacePath = getWorkspace();
+        this.vscodeService.getActiveTerminal(true).sendText(`hc app init ${path}`);
+        
+        let workSpacePath = this.vscodeService.getWorkspace();
         let dnaYamlPath = `${workSpacePath}/${path}/happ.yaml`;
-        tryOpenFile(20000,dnaYamlPath);
+        this.vscodeService.tryOpenFile(20000,dnaYamlPath);
     }
 }
+@injectable()
 export class AppPack implements ICommand {
+    constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
+
     name = "holochainer.app.pack";
     execute = async () => {
         const def = [
@@ -40,13 +49,15 @@ export class AppPack implements ICommand {
             }
         ] as HcCommandInput[];
     
-        let params = await displayTextBoxCommand(def);
-        goToActiveWorkspace();
-        getActiveTerminal().sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
+        let params = await   this.vscodeService.displayTextBoxCommand(def);
+        this.vscodeService.goToActiveWorkspace();
+        this.vscodeService.getActiveTerminal(true).sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 
     }
 }
-export class AppUnPack implements ICommand {
+@injectable()
+export class AppUnPack implements ICommand { 
+    constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
     name = "holochainer.app.unpack";
     execute = async () => {
         const def = [
@@ -61,9 +72,9 @@ export class AppUnPack implements ICommand {
                 If not specified, the file will be placed inside the input directory, and given the name "[DNA_NAME].dna"`,
             }
         ] as HcCommandInput[];
-        let params = await displayTextBoxCommand(def);
-        goToActiveWorkspace();
-        getActiveTerminal().sendText(`hc app unpack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
+        let params = await  this.vscodeService.displayTextBoxCommand(def);
+        this.vscodeService.goToActiveWorkspace();
+        this.vscodeService.getActiveTerminal(true).sendText(`hc app unpack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 
     }
 }

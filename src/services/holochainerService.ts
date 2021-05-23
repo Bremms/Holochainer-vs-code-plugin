@@ -1,30 +1,19 @@
-import { AppInit, AppPack, AppUnPack } from "./hc/app";
-import { DnaInit, DnaPack, DnaUnPack } from "./hc/dna";
-import { SandboxGenerate } from "./hc/sandbox";
 import { ICommand } from "./shared/ICommand";
 import * as vscode from 'vscode';
-import { createDefaultNix, enterNix } from "./nix/nix";
-import { compileToWasm } from "./wasm/wasm";
-import { InitTests } from "./tests/tests";
-import { createZome, initZome } from "./zomes/zomes";
-import { npmInstallConductor } from "./javascript/javascript";
-
+import { multiInject, injectable } from 'inversify';
+import TYPES from "../dependencyInjection/types";
+@injectable()
 export class Holochainer {
-    private _hcCommands = [new AppInit(), new AppPack(), new AppUnPack(),
-    new DnaInit(), new DnaPack(), new DnaUnPack(),
-    new SandboxGenerate()] as ICommand[];
-    private _nixCommands = [new enterNix(), new createDefaultNix()] as ICommand[];
-    private _wasmCommands = [new compileToWasm()] as ICommand[];
-    private _testsCommands = [new InitTests()] as ICommand[];
-    private _zomeCommands = [new createZome(), new initZome()]
-    private _jsCommands = [new npmInstallConductor()];
-    registerCommands = (context: vscode.ExtensionContext) => {
-        let all = [...this._hcCommands, ...this._nixCommands, ...this._wasmCommands, ...this._testsCommands, ...this._zomeCommands, ...this._jsCommands];
-        all.forEach((cmd) => {
-            let ctx = vscode.commands.registerCommand(cmd.name, async (args) => {
-               await cmd.execute(args);
-            })
-            context.subscriptions.push(ctx);
-        })
+
+    constructor(
+        @multiInject(TYPES.ICommand) private commands: ICommand[]
+    ) { }
+    
+    registerCommands(context: vscode.ExtensionContext) {
+        debugger;
+        for (const c of this.commands) {
+            const cmd = vscode.commands.registerCommand(c.name, c.execute);
+            context.subscriptions.push(cmd);
+        }
     }
 }
