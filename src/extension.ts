@@ -23,17 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	try {
 		const holochainer = container.get<Holochainer>(TYPES.Holochainer);
-		debugger;
 		holochainer.registerCommands(context);
 	} catch (err) {
-		debugger
+		vscode.window.showErrorMessage('Failed to instantiate holochainer plugin');
+		
 	}
-
-	// var holochainer = new Holochainer();
-
-	// holochainer.registerCommands(context);
-
-
-
 }
 export function deactivate() { }

@@ -13,6 +13,7 @@ import { compileToWasm } from '../services/wasm/wasm';
 import { InitTests } from '../services/tests/tests';
 import { createZome, initZome } from '../services/zomes/zomes';
 import { npmInstallConductor } from '../services/javascript/javascript';
+import VsCodeTerminal, { ICommandTerminal } from '../services/shared/VsCodeTerminal';
 
 const container = new Container();
 container.bind<IVsCodeService>(TYPES.IVsCodeService).to(VsCodeService);
@@ -31,6 +32,7 @@ container.bind<ICommand>(TYPES.ICommand).to(createZome);
 container.bind<ICommand>(TYPES.ICommand).to(npmInstallConductor);
 container.bind<ICommand>(TYPES.ICommand).to(initZome);
 container.bind<Holochainer>(TYPES.Holochainer).to(Holochainer);
+container.bind<ICommandTerminal>(TYPES.ITerminalCommand).to(VsCodeTerminal);
 // container.bind<Command>(TYPES.Command).to(AddCommand);
 // container.bind<Command>(TYPES.Command).to(RemoveCommand);
 // container.bind<CommandsManager>(TYPES.CommandManager).to(CommandsManager);

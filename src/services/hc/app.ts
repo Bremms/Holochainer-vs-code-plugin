@@ -18,11 +18,10 @@ export class AppInit implements ICommand {
                 prompt: "Select a path. If none supplied 'workdir/happ' will be taken instead",
             },
         ] as HcCommandInput[];
-       
-        let params = await this.vscodeService.displayTextBoxCommand(def,args.answers);
+        let params = await this.vscodeService.displayTextBoxCommand(def,args?.answers);
         this.vscodeService.goToActiveWorkspace();
 
-        let path = params[0] == "" ? 'workdir/happ' : params[1];
+        let path = params[0] == "" ? 'workdir/happ' : params[0];
         this.vscodeService.getActiveTerminal(true).sendText(`hc app init ${path}`);
         
         let workSpacePath = this.vscodeService.getWorkspace();
@@ -35,7 +34,7 @@ export class AppPack implements ICommand {
     constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
 
     name = "holochainer.app.pack";
-    execute = async () => {
+    execute = async (args: any) => {
         const def = [
             {
                 value: '',
@@ -46,12 +45,12 @@ export class AppPack implements ICommand {
                 prompt: `Specify the output path for the packed bundle file.
                     
                 If not specified, the file will be placed inside the input directory, and given the name "[DNA_NAME].dna"`,
-            }
+            } 
         ] as HcCommandInput[];
     
-        let params = await   this.vscodeService.displayTextBoxCommand(def);
+        let params = await   this.vscodeService.displayTextBoxCommand(def,args?.answers);
         this.vscodeService.goToActiveWorkspace();
-        this.vscodeService.getActiveTerminal(true).sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
+        this.vscodeService.getActiveTerminal(true).sendText(`hc app pack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]==""?'workdir/happ' : params[0]}`);
 
     }
 }
