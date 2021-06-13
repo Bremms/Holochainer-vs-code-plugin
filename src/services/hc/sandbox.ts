@@ -34,7 +34,7 @@ export class SandboxGenerate implements ICommand {
                 prompt: `(Optional) Set a root directory for conductor sandboxes to be placed into. Defaults to the system's temp directory. This directory must already exist.`
             }
         ] as HcCommandInput[];
-        let params = await this.vscodeService.displayTextBoxCommand(def);
+        let params = await this.vscodeService.displayTextBoxCommand(def,args?.answers);
         this.vscodeService.getActiveTerminal(true).sendText(`hc sandbox generate ${params[0] == '' ? 'workdir/happ' : params[0]} ${params[1] == '' ? '' : `--app-id=${params[1]}`} ${params[2] == '' ? '' : `--run=${params[2]}`} ${params[3] == '' ? '' : `--num-sandboxes=${params[3]}`} ${params[4] == '' ? '' : `--root=${params[4]}`}`)
 
 

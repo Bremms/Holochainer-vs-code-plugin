@@ -58,7 +58,7 @@ export class AppPack implements ICommand {
 export class AppUnPack implements ICommand { 
     constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
     name = "holochainer.app.unpack";
-    execute = async () => {
+    execute = async (args? : any) => {
         const def = [
             {
                 value: '',
@@ -71,7 +71,7 @@ export class AppUnPack implements ICommand {
                 If not specified, the file will be placed inside the input directory, and given the name "[DNA_NAME].dna"`,
             }
         ] as HcCommandInput[];
-        let params = await  this.vscodeService.displayTextBoxCommand(def);
+        let params = await  this.vscodeService.displayTextBoxCommand(def,args?.answers);
         this.vscodeService.goToActiveWorkspace();
         this.vscodeService.getActiveTerminal(true).sendText(`hc app unpack ${params[1] == '' ?   '' : `-o ${params[1]}`} ${params[0]  == "" ? 'workdir/happ' : params[0]}`);
 

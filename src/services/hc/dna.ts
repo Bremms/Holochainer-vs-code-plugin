@@ -8,7 +8,7 @@ export class DnaPack implements ICommand {
     constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
 
     name = "holochainer.dna.pack";
-    execute = async () => {
+    execute = async (args? : any) => {
         const def = [
             { value: "", prompt: "Select a path. If none supplied 'workdir/dna' will be taken instead" },
             {
@@ -17,7 +17,7 @@ export class DnaPack implements ICommand {
             If not specified, the file will be placed inside the input directory, and given the name "[DNA_NAME].dna`},
         ] as HcCommandInput[];
 
-        let params = await this.vscodeService.displayTextBoxCommand(def);
+        let params = await this.vscodeService.displayTextBoxCommand(def,args?.answers);
         this.vscodeService.goToActiveWorkspace();
         this.vscodeService.getActiveTerminal(true).sendText(`hc dna pack ${params[0] == '' ? '' : `-o ${params[0]}`}${params[1] == '' ? `workdir/dna` : params[2]} `)
     }
@@ -27,7 +27,7 @@ export class DnaUnPack implements ICommand {
     constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
 
     name = "holochainer.dna.unpack";
-    execute = async () => {
+    execute = async (args? : any) => {
         const def = [
             {
                 value: '',
@@ -51,7 +51,7 @@ export class DnaInit implements ICommand {
     constructor(@inject(TYPES.IVsCodeService) private vscodeService : IVsCodeService){};
 
     name = "holochainer.dna.init";
-    execute = async () => {
+    execute = async (args? : any) => {
         const def = [
             {
                 value: '',
@@ -59,7 +59,7 @@ export class DnaInit implements ICommand {
             }
         ] as HcCommandInput[];
 
-        let params = await this.vscodeService.displayTextBoxCommand(def);
+        let params = await this.vscodeService.displayTextBoxCommand(def,args.answers);
         this.vscodeService.goToActiveWorkspace();
         var workSpacePath = this.vscodeService.getWorkspace();
         let path  = params[0] == "" ? 'workdir/dna' : params[0];
