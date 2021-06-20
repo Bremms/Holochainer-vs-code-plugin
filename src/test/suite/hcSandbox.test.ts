@@ -47,16 +47,28 @@ suite('Hc Sandbox test,', () => {
 		//Verify actual commando
 		assert.strictEqual(cmd.trim(),`hc sandbox generate workdir/happ --app-id=holoApp`);
 	});
-	test('the run param can be specified to run on other instances', async () => {
+	test('the num sandboxes param can be specified ', async () => {
         var vscodeMock = MockFactory.getVsCodeServiceMock();
 		var appInit = new SandboxGenerate(vscodeMock);
 		
-		await appInit.execute({answers : ["","","9000","",""]})
+		await appInit.execute({answers : ["","","","2",""]})
 		var terminal  = vscodeMock.getActiveTerminal(false) as MockTerminal
 		//Verify app init command. The command should always be executed on the workspaceRoot
 		var cmdBuffer = terminal.textBuffer;
 		var cmd = cmdBuffer[0];
 		//Verify actual commando
-		assert.strictEqual(cmd.trim(),`hc sandbox generate workdir/happ  --run=9000`);
+		assert.strictEqual(cmd.trim(),`hc sandbox generate workdir/happ   --num-sandboxes=2`);
+	});
+	test('A root dir can be specified', async () => {
+        var vscodeMock = MockFactory.getVsCodeServiceMock();
+		var appInit = new SandboxGenerate(vscodeMock);
+		
+		await appInit.execute({answers : ["","","","","workdir/test"]})
+		var terminal  = vscodeMock.getActiveTerminal(false) as MockTerminal
+		//Verify app init command. The command should always be executed on the workspaceRoot
+		var cmdBuffer = terminal.textBuffer;
+		var cmd = cmdBuffer[0];
+		//Verify actual commando
+		assert.strictEqual(cmd.trim(),`hc sandbox generate workdir/happ    --root=workdir/test`);
 	});
 });
